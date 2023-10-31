@@ -75,9 +75,10 @@ var second = generator.newUUID(); // returns 1
 // we push an UUID to a list of unused UUIDs
 generator.reuse(first); // tells the generator that "first" UUID is available
 
-// we generate a new one (or and) the list of unused UUID list is empty now
+// we generate a "new" one (the recycled one comes first)
 var reused = generator.newUUID(); // returns 0 (the "first" UUID)
 
+// we generate another one (the unused list is empty)
 var next = generator.newUUID(); // returns 2 (we get the next one)
 ```
 
