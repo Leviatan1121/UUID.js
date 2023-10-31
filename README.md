@@ -114,6 +114,7 @@ for (let i = 0; i < 100; i++) { // we try to generate 100 UUIDs
     console.log(`The UUID '${id}' has been generated.`);
   } else { // if it is false (UUID has not been generated)
     console.log(`${generator.totalUsed} UUIDs generated. Limit reached.`);
+    break;
   }
 }
 ```
