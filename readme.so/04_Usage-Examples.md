@@ -32,9 +32,10 @@ var second = generator.newUUID(); // returns 1
 // we push an UUID to a list of unused UUIDs
 generator.reuse(first); // tells the generator that "first" UUID is available
 
-// we generate a new one (or and) the list of unused UUID list is empty now
+// we generate a "new" one (the recycled one comes first)
 var reused = generator.newUUID(); // returns 0 (the "first" UUID)
 
+// we generate another one (the unused list is empty)
 var next = generator.newUUID(); // returns 2 (we get the next one)
 ```
 
@@ -49,7 +50,7 @@ generator.unusedUUIDs; // returns the list of reusable UUIDs
 ```
 
 #### Changing the character set and limit for generating UUIDs
-You can specify the set of character for generating UUIDs.
+You can specify the set of characters for generating UUIDs.
 ```javascript
 generator.charSet = [ "A", "B", "C" ];
 ```
@@ -71,6 +72,7 @@ for (let i = 0; i < 100; i++) { // we try to generate 100 UUIDs
     console.log(`The UUID '${id}' has been generated.`);
   } else { // if it is false (UUID has not been generated)
     console.log(`${generator.totalUsed} UUIDs generated. Limit reached.`);
+    break;
   }
 }
 ```
