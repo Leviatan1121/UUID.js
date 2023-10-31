@@ -1,0 +1,18 @@
+<script src="uuid_script.js"></script>
+
+<script>
+    const gen = new UUID()
+    gen.limit = 50
+    //gen.charSet = ['a', 5, 'X']
+
+    for (let i = 0; i < 100; i++) {
+        let id = gen.newUUID()
+
+        if (id) {
+            console.log(`The UUID '${id}' has been generated.`);
+        } else {
+            console.log(gen.totalUsed + " UUIDs generated. " + gen.limit + " reached");
+            break
+        }
+    }
+</script>
