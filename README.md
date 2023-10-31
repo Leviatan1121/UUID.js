@@ -11,13 +11,13 @@ UUID.js is a simple and lightweight JavaScript library for generating universall
 - Easy to install and use
 
 
+
 ## Installation
 Installing the UUID generator in your application is as simple as it should be.
 
 Depending on what you work with or what you need, we have different installation methods.
 
 #### Using require
-
 
 [//]: # (Install my-project with npm)
 [//]: # (```bash)
@@ -38,7 +38,8 @@ import UUID from 'https://uuid.levihub.dev/uuid_module.js';
 #### Using it as an inline script
 
 ```html
-<script src="https://uuid.levihub.dev/uuid_script.js."></script>
+<script src="https://uuid.levihub.dev/uuid_script.js"></script>
+```
 ```
 ## Usage/Examples
 

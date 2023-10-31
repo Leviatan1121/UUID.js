@@ -1,3 +1,4 @@
+
 ## Installation
 Installing the UUID generator in your application is as simple as it should be.
 
@@ -25,5 +26,5 @@ import UUID from 'https://uuid.levihub.dev/uuid_module.js';
 #### Using it as an inline script
 
 ```html
-<script src="https://uuid.levihub.dev/uuid_script.js."></script>
+<script src="https://uuid.levihub.dev/uuid_script.js"></script>
 ```
