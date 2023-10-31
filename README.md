@@ -40,7 +40,7 @@ import UUID from 'https://uuid.levihub.dev/uuid_module.js';
 ```html
 <script src="https://uuid.levihub.dev/uuid_script.js"></script>
 ```
-```
+
 ## Usage/Examples
 
 #### Create a new instance
