@@ -93,7 +93,7 @@ generator.unusedUUIDs; // returns the list of reusable UUIDs
 ```
 
 #### Changing the character set and limit for generating UUIDs
-You can specify the set of character for generating UUIDs.
+You can specify the set of characters for generating UUIDs.
 ```javascript
 generator.charSet = [ "A", "B", "C" ];
 ```
