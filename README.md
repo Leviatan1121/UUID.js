@@ -1,12 +1,20 @@
 # Welcome to UUID 👋
 
-UUID.js is a simple and lightweight JavaScript library for generating universally unique identifiers (UUIDs). It provides an easy and efficient way to create unique identifiers for various applications. Whether you're working in a Node.js environment or embedding it directly in your HTML with a script tag, UUID.js is a straightforward solution for generating UUIDs.
+UUID.js is a simple and lightweight JavaScript library for generating universally unique identifiers (UUIDs).
+
+It provides an easy and efficient way to create unique identifiers for various applications.
+
+Whether you're working in a Node.js environment or embedding it directly in your HTML with a script tag, UUID.js is a straightforward solution for generating UUIDs.
 
 
 ## Features
 
 - Generate UUIDs
-- If needed, recycle or reuse UUIDs
+- If needed, recycle or reuse any UUID
+- Set the character set for your UUIDs
+- Limit the maximum amount of UUIDs to generate
+- Check how many UUIDs are you using or available
+- Check the UUIDs available
 - Simple and lightweight
 - Easy to install and use
 
