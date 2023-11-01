@@ -4,7 +4,8 @@ UUID.js is a simple and lightweight JavaScript library for generating universall
 
 It provides an easy and efficient way to create unique identifiers for various applications.
 
-Whether you're working in a Node.js environment or embedding it directly in your HTML with a script tag, UUID.js is a straightforward solution for generating UUIDs.
+[//]: # (Whether you're working in a Node.js environment or embedding it directly in your HTML with a script tag, )
+UUID.js is a straightforward solution for generating UUIDs.
 
 ### Table of Contents
 
@@ -28,9 +29,9 @@ Whether you're working in a Node.js environment or embedding it directly in your
 ## Installation
 Installing the UUID generator in your application is as simple as it should be.
 
-Depending on what you work with or what you need, we have different installation methods.
+[//]: # (Depending on what you work with or what you need, we have different installation methods.)
 
-#### Using require
+[//]: # (#### Using require)
 
 [//]: # (Install my-project with npm)
 [//]: # (```bash)
@@ -38,15 +39,15 @@ Depending on what you work with or what you need, we have different installation
 [//]: # (  cd my-project)
 [//]: # (```)
 
-```javascript
-const UUID = require('https://uuid.levihub.dev/uuid.js');
-```
+[//]: # (```javascript)
+[//]: # (const UUID = require('https://uuid.levihub.dev/uuid.js');)
+[//]: # (```)
 
-#### Using import and export
+[//]: # (#### Using import and export)
 
-```javascript
-import UUID from 'https://uuid.levihub.dev/uuid_module.js';
-```
+[//]: # (```javascript)
+[//]: # (import UUID from 'https://uuid.levihub.dev/uuid_module.js';)
+[//]: # (```)
 
 #### Using it as an inline script
 
