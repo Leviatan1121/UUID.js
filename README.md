@@ -40,9 +40,7 @@ Installing the UUID generator in your application is as simple as it should be.
 [//]: # (```)
 
 [//]: # (```javascript)
-[//]: # (const UUID = require(')
-[//]: # (https://uuid.levihub.dev/uuid.js')
-[//]: # (;)
+[//]: # (const UUID = require...)
 [//]: # (```)
 
 [//]: # (#### Using import and export)
