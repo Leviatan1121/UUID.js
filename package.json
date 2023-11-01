@@ -1,0 +1,22 @@
+{
+  "name": "uuid",
+  "version": "1.0.0",
+  "description": "Lightweight UUID generator.",
+  "main": "uuid.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leviatan1121/UUID.js.git"
+  },
+  "keywords": [
+    "UUID"
+  ],
+  "author": "Leviatan1121",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leviatan1121/UUID.js/issues"
+  },
+  "homepage": "https://github.com/Leviatan1121/UUID.js#readme"
+}

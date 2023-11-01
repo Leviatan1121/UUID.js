@@ -6,6 +6,11 @@ It provides an easy and efficient way to create unique identifiers for various a
 
 Whether you're working in a Node.js environment or embedding it directly in your HTML with a script tag, UUID.js is a straightforward solution for generating UUIDs.
 
+### Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage/Examples](#usageexamples)
 
 ## Features
 
