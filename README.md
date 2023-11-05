@@ -29,30 +29,17 @@ UUID.js is a straightforward solution for generating UUIDs.
 ## Installation
 Installing the UUID generator in your application is as simple as it should be.
 
-[//]: # (Depending on what you work with or what you need, we have different installation methods.)
+Depending on what you work with or what you need, we have different installation methods.
 
-[//]: # (#### Using require)
+### Install with npm
+```bash
+  npm i @levihub/uuid
+```
 
-[//]: # (Install my-project with npm)
-[//]: # (```bash)
-[//]: # (  npm install my-project)
-[//]: # (  cd my-project)
-[//]: # (```)
-
-[//]: # (```javascript)
-[//]: # (const UUID = require...)
-[//]: # (```)
-
-[//]: # (#### Using import and export)
-
-[//]: # (```javascript)
-[//]: # (import UUID from 'https://uuid.levihub.dev/uuid_module.js';)
-[//]: # (```)
 
 #### Using it as an inline script
-
 ```html
-<script src="https://uuid.levihub.dev/uuid_script.js"></script>
+<script src="https://uuid.levihub.dev/dist/uuid.js"></script>
 ```
 
 ## Usage/Examples
