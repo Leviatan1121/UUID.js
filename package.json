@@ -1,6 +1,6 @@
 {
   "name": "@levihub/uuid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight UUID generator.",
   "type": "module",
   "exports": {
@@ -21,9 +21,5 @@
   "bugs": {
     "url": "https://github.com/Leviatan1121/UUID.js/issues"
   },
-  "homepage": "https://github.com/Leviatan1121/UUID.js#readme",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  "homepage": "https://github.com/Leviatan1121/UUID.js#readme"
 }
