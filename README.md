@@ -37,12 +37,27 @@ Depending on what you work with or what you need, we have different installation
 ```
 
 
-#### Using it as an inline script
+### As an inline script
 ```html
 <script src="https://uuid.levihub.dev/dist/uuid.js"></script>
 ```
 
+### As a module in browser
+```javascript
+import UUID from "https://uuid.levihub.dev/dist/uuid.js"; // or with ES Modules
+```
+
 ## Usage/Examples
+
+### Using Node
+```javascript
+const UUID = require("uuid"); // Common JS
+import UUID from "uuid"; // or with ES Modules
+```
+
+### Using browser
+```javascript
+```
 
 #### Create a new instance
 For using the UUID class, you have to create an instance of it first.
