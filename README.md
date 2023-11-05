@@ -32,7 +32,7 @@ Depending on what you work with or what you need, we have different installation
 
 #### Install with npm
 ```bash
-  npm i @levihub/uuid
+npm i @levihub/uuid
 ```
 
 #### As an inline script (browser)
