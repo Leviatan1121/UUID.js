@@ -51,9 +51,9 @@ import UUID from "https://uuid.levihub.dev/dist/uuid.mjs";
 Once installed with npm package manager, you need to import the package in order to use it.
 
 ```javascript
-const UUID = require("uuid"); // Common JS
+const UUID = require("@levihub/uuid"); // Common JS
 // or 
-import UUID from "uuid"; // ES Modules
+import UUID from "@levihub/uuid"; // ES Modules
 ```
 
 #### Create a new instance
