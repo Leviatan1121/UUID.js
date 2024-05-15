@@ -37,12 +37,12 @@ npm i @levihub/uuid
 
 #### As an inline script (browser)
 ```html
-<script src="https://uuid.levihub.dev/dist/uuid.js"></script>
+<script src="https://uuid.levihub.dev/uuid.js"></script>
 ```
 
 #### As a module (browser)
 ```javascript
-import UUID from "https://uuid.levihub.dev/dist/uuid.mjs";
+import UUID from "https://uuid.levihub.dev/uuid.mjs";
 ```
 
 ## Usage/Examples
