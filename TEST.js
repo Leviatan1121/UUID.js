@@ -58,7 +58,6 @@ debug();
 let test_uuid = recycler.generate(null, false); // should be "1"
 console.log(test_uuid); //* ok
 debug();
-process.exit(0);
 
 process.exit(0);
 
