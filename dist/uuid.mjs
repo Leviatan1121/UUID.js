@@ -36,15 +36,12 @@ class UUID {
         this.current_uuids++;
 
         if ((reuse || (reuse === null && this.reuse_by_default)) && this.unused_uuids_count > 0) {
-            console.log('A');
             this.unused_uuids_count--;
             return this.unused_uuids.shift();
-        } else if (!uuid && !this.last_uuid) { //! TODO: Check this condition
-            console.log('B');
+        } else if (!uuid && !this.last_uuid) {
             this.last_uuid = this.FIRST_CHAR;
             return this.FIRST_CHAR;
         } else if (!uuid) {
-            console.log('C');
             uuid = this.last_uuid
         }
 

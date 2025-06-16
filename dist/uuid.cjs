@@ -2,6 +2,13 @@ class UUID {
     static CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     static FIRST_CHAR = "0";
     static LAST_CHAR = "z";
+    /**
+     * @param {string} last_uuid - Last generated UUID
+     * @param {number} [limit=false] - Limit of generated UUIDs, default is false for no limit
+     * @param {boolean} [reuse_by_default=true] - Reuse unused UUIDs by default, enabled by default
+     * @param {boolean} [ordered_unused_uuids=true] - Order unused UUIDs, enabled by default
+     */
+
     last_uuid = null;
     current_uuids = 0;
     unused_uuids_count = 0;
@@ -9,15 +16,19 @@ class UUID {
     ordered_unused_uuids = true;
     reuse_by_default = true;
     limit = false;
+    /**
+    * @param {string} chars - String or array of characters to use as charset
+    */
     constructor(chars = UUID.CHARSET) {
+        if (typeof chars !== 'string' || chars.trim() === '') return;
         this.CHARSET = chars;
         this.FIRST_CHAR = chars[0];
         this.LAST_CHAR = chars[chars.length - 1];
     }
     /**
-     * @param {string} uuid
-     * @param {boolean|null} [reuse=null]
-     * @returns {string|false}
+     * @param {string} uuid - UUID to generate or compare
+     * @param {boolean|null} [reuse=null] - Force reuse of UUID if true, new if false
+     * @returns {string|false} - Generated UUID or false if limit is reached
      */
     generate(uuid = this.last_uuid, reuse = null) {
         if (this.limit && this.current_uuids > this.limit - 1) return false;
@@ -27,9 +38,11 @@ class UUID {
         if ((reuse || (reuse === null && this.reuse_by_default)) && this.unused_uuids_count > 0) {
             this.unused_uuids_count--;
             return this.unused_uuids.shift();
-        } else if (!uuid) {
+        } else if (!uuid && !this.last_uuid) {
             this.last_uuid = this.FIRST_CHAR;
             return this.FIRST_CHAR;
+        } else if (!uuid) {
+            uuid = this.last_uuid
         }
 
         const UUID_LENGTH = uuid.length;
@@ -45,8 +58,19 @@ class UUID {
             + this.FIRST_CHAR.repeat(UUID_LENGTH - i - 1); // rest of chars
         return this.last_uuid;
     }
+    /**
+     * @param {string} uuid - UUID to reuse
+     */
     reuse(uuid) {
         if (typeof uuid !== 'string' || uuid.trim() === '' || this.unused_uuids.includes(uuid)) return;
+
+        if (this.compare(uuid, this.last_uuid) > 0) {
+            this.last_uuid = uuid;
+            this.unused_uuids.push(uuid);
+            this.unused_uuids_count++;
+            if (this.current_uuids > 0) this.current_uuids--;
+            return;
+        }
 
         if (!this.ordered_unused_uuids || this.unused_uuids_count === 0) {
             this.unused_uuids.push(uuid);
@@ -73,7 +97,13 @@ class UUID {
         this.unused_uuids_count++;
         if (this.current_uuids > 0) this.current_uuids--;
     }
+    /**
+     * @param {string} a - First UUID to compare
+     * @param {string} b - Second UUID to compare
+     * @returns {number} - 0 if equal, -1 if a < b, 1 if a > b
+     */
     compare(a, b) {
+        if (typeof a !== 'string' || typeof b !== 'string' || a.trim() === '' || b.trim() === '') return 0;
         const a_length = a.length;
         const b_length = b.length;
         if (a_length < b_length) return -1;

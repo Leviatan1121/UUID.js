@@ -40,34 +40,11 @@ console.assert(recycler.unused_uuids_count === 1, "Should have one recycled UUID
 console.assert(recycler.generate() === "0", "Should reuse recycled UUID");
 console.assert(recycler.generate() === "2", "Should continue sequence after reuse");
 
-
-function debug() {
-    console.log('\n----------------------');
-    console.log(`current_uuids:`, recycler.current_uuids);
-    console.log(`last_uuid: "${recycler.last_uuid}"`);
-    console.log(`unused_uuids:`, recycler.unused_uuids);
-    console.log(`unused_uuids_count:`, recycler.unused_uuids_count);
-    console.log('----------------------\n');
-}
-
-//! TODO: Fix this test
 // Test recycling with force new
 recycler.reuse("1");
-
-debug();
-let test_uuid = recycler.generate(null, false); // should be "1"
-console.log(test_uuid); //* ok
-debug();
-
-process.exit(0);
-
-let new_uuid = recycler.generate(null, false);
-console.log(new_uuid);
-console.assert(new_uuid === "3", "Should force new UUID when specified");
+console.assert(recycler.generate(null, false) === "3", "Should force new UUID when specified");
 console.assert(recycler.generate(null, true) === "1", "Should force reuse when specified");
 console.log("✅ Recycling works!\n");
-
-process.exit(0);
 
 
 // Test 4: Ordered vs Unordered recycling
@@ -131,5 +108,26 @@ console.assert(limiter.generate() === "0", "Should still reuse below limit");
 console.assert(limiter.generate() === false, "Should still respect limit after reuse");
 console.log("✅ Limit works!\n");
 
+// Test 8: Reuse by default behavior
+console.log("📌 Test 8: Reuse by default behavior");
+const reuseDefault = new UUID();
+reuseDefault.reuse_by_default = false;
+reuseDefault.generate(); // "0"
+reuseDefault.generate(); // "1"
+reuseDefault.generate(); // "2"
+
+reuseDefault.reuse("1");
+console.assert(reuseDefault.generate() === "3", "Should not reuse by default when false");
+console.assert(reuseDefault.generate(null, false) === "4", "Should force new when specified");
+console.assert(reuseDefault.generate(null, true) === "1", "Should still reuse when forced");
+
+// Test switching back to default behavior
+reuseDefault.reuse_by_default = true;
+reuseDefault.reuse("1");
+reuseDefault.reuse("2");
+console.assert(reuseDefault.generate(null, false) === "5", "Should create new UUID when false");
+console.assert(reuseDefault.generate() === "1", "Should reuse again when default is true");
+console.assert(reuseDefault.generate(null, true) === "2", "Should create new UUID when false");
+console.log("✅ Reuse by default behavior works!\n");
+
 console.log("🎉 All tests passed successfully!");
-;;
