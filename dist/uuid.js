@@ -1,93 +1,98 @@
 class UUID {
-    charSet = [
-        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-    ];
-
-    totalUsed = 0
-    totalUnused = 0
-    currentPosition = 0;
-    currentUUIDLength = 1;
-    unusedUUIDs = [];
-    limit = false
-
-    newUUID() {
-        if (this.limit && this.totalUsed === this.limit) return false;
-
-        this.totalUsed++
-
-        if (this.totalUnused > 0) {
-            this.totalUnused--
-            return this.unusedUUIDs.shift();
-        }
-
-        if (this.currentPosition >= this.charSet.length ** this.currentUUIDLength) {
-            this.currentUUIDLength++;
-            this.currentPosition = 0;
-        }
-
-        const newUUID = this.getNewUUID();
-        this.currentPosition++;
-        return newUUID.toString();
+    static CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static FIRST_CHAR = "0";
+    static LAST_CHAR = "z";
+    last_uuid = null;
+    current_uuids = 0;
+    unused_uuids_count = 0;
+    unused_uuids = [];
+    ordered_unused_uuids = true;
+    reuse_by_default = true;
+    limit = false;
+    constructor(chars = UUID.CHARSET) {
+        this.CHARSET = chars;
+        this.FIRST_CHAR = chars[0];
+        this.LAST_CHAR = chars[chars.length - 1];
     }
+    /**
+     * @param {string} uuid
+     * @param {boolean|null} [reuse=null]
+     * @returns {string|false}
+     */
+    generate(uuid = this.last_uuid, reuse = null) {
+        if (this.limit && this.current_uuids > this.limit - 1) return false;
 
-    getNewUUID() {
-        let index = this.currentPosition;
-        let newUUID = "";
+        this.current_uuids++;
 
-        for (let i = 0; i < this.currentUUIDLength; i++) {
-            newUUID = this.charSet[index % this.charSet.length] + newUUID;
-            index = Math.floor(index / this.charSet.length);
+        if ((reuse || (reuse === null && this.reuse_by_default)) && this.unused_uuids_count > 0) {
+            this.unused_uuids_count--;
+            return this.unused_uuids.shift();
+        } else if (!uuid) {
+            this.last_uuid = this.FIRST_CHAR;
+            return this.FIRST_CHAR;
         }
 
-        return newUUID;
-    }
+        const UUID_LENGTH = uuid.length;
+        let i = UUID_LENGTH - 1;
+        // where we need to increment
+        while (i >= 0 && uuid[i] === this.LAST_CHAR) i--;
 
+        // UUID creation
+        this.last_uuid = (i < 0)
+            ? this.FIRST_CHAR.repeat(UUID_LENGTH + 1)
+            : uuid.substring(0, i)
+            + this.CHARSET[this.CHARSET.indexOf(uuid[i]) + 1] // next char
+            + this.FIRST_CHAR.repeat(UUID_LENGTH - i - 1); // rest of chars
+        return this.last_uuid;
+    }
     reuse(uuid) {
-        if (this.unusedUUIDs.includes(uuid)) return;
+        if (typeof uuid !== 'string' || uuid.trim() === '' || this.unused_uuids.includes(uuid)) return;
 
-        if (this.totalUnused < 1) {
-            this.unusedUUIDs.push(uuid);
-            this.totalUsed--
-            this.totalUnused++
-            return
+        if (!this.ordered_unused_uuids || this.unused_uuids_count === 0) {
+            this.unused_uuids.push(uuid);
+            this.unused_uuids_count++;
+            if (this.current_uuids > 0) this.current_uuids--;
+            return;
         }
 
-        for (let insertIndex = 0; insertIndex < this.unusedUUIDs.length; insertIndex++) {
-            if (this.compareCharSet(uuid, this.unusedUUIDs[insertIndex]) <= 0) {
-                this.unusedUUIDs.splice(insertIndex, 0, uuid);
-                this.totalUsed--
-                this.totalUnused++
-                return;
+        let left = 0;
+        let right = this.unused_uuids_count - 1;
+        let insert_index = this.unused_uuids_count;
+
+        while (left <= right) {
+            const mid = Math.floor((left + right) / 2);
+            if (this.compare(uuid, this.unused_uuids[mid]) > 0) {
+                left = mid + 1;
+            } else {
+                insert_index = mid;
+                right = mid - 1;
             }
         }
+
+        this.unused_uuids.splice(insert_index, 0, uuid);
+        this.unused_uuids_count++;
+        if (this.current_uuids > 0) this.current_uuids--;
     }
-
-    compareCharSet(a, b) {
-        const aLength = a.length;
-        const bLength = b.length;
-
-        if (aLength < bLength) {
-            return -1;
-        } else if (aLength > bLength) {
-            return 1;
+    compare(a, b) {
+        const a_length = a.length;
+        const b_length = b.length;
+        if (a_length < b_length) return -1;
+        if (a_length > b_length) return 1;
+        for (let i = 0; i < a_length; i++) {
+            const a_index = this.CHARSET.indexOf(a.charAt(i));
+            const b_index = this.CHARSET.indexOf(b.charAt(i));
+            if (a_index < b_index) return -1;
+            else if (a_index > b_index) return 1;
         }
-
-        for (let i = 0; i < aLength; i++) {
-            const aChar = a.charAt(i);
-            const bChar = b.charAt(i);
-
-            const aIndex = this.charSet.indexOf(aChar);
-            const bIndex = this.charSet.indexOf(bChar);
-
-            if (aIndex < bIndex) {
-                return -1;
-            } else if (aIndex > bIndex) {
-                return 1;
-            }
-        }
-
         return 0;
+    }
+    reset() {
+        this.last_uuid = null;
+        this.current_uuids = 0;
+        this.unused_uuids_count = 0;
+        this.unused_uuids.length = 0;
+        this.ordered_unused_uuids = true;
+        this.reuse_by_default = true;
+        this.limit = false;
     }
 }

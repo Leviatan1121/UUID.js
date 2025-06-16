@@ -1,31 +1,33 @@
-# Welcome to UUID 👋
+# Welcome to UUID.js 👋
+![language](https://img.shields.io/badge/language-JavaScript-yellow.svg) ![version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 
+> A lightweight and powerful JavaScript library for generating UUIDs with advanced recycling and sequential features.
+
+Leave a ⭐️ if you liked this project!
+
+### 📑 Table of Contents
+- [About](#ℹ%EF%B8%8F-about)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Usage/Examples](#-usageexamples)
+
+## ℹ️ About
 UUID.js is a simple and lightweight JavaScript library for generating universally unique identifiers (UUIDs).
 
-It provides an easy and efficient way to create unique identifiers for various applications.
+With its flexible recycling system and sequential generation capabilities, it provides a powerful solution for managing unique identifiers in any JavaScript environment.
 
-Whether you're working in a Node.js environment or embedding it directly in your HTML with a script tag, UUID.js is a straightforward solution for generating UUIDs.
+## ✨ Features
 
-### Table of Contents
+- Generate sequential UUIDs with your own character set
+- Recycle and reuse UUIDs when needed
+- Limit how many UUIDs to generate
+- Keep track of used and available UUIDs
+- Compare UUIDs easily
+- Reset the generator to its initial state
+- Works in both Node.js and browsers
+- Lightweight and simple to use
 
-- [Features](#features)
-- [Installation](#installation)
-- [Usage/Examples](#usageexamples)
-
-## Features
-
-- Generate UUIDs
-- If needed, recycle or reuse any UUID
-- Set the character set for your UUIDs
-- Limit the maximum amount of UUIDs to generate
-- Check how many UUIDs are you using or available
-- Check the UUIDs available
-- Simple and lightweight
-- Easy to install and use
-
-
-
-## Installation
+## 📦 Installation
 Installing the UUID generator in your application is as simple as it should be.
 
 Depending on what you work with or what you need, we have different installation methods.
@@ -45,9 +47,9 @@ npm i @levihub/uuid
 import UUID from "https://uuid.levihub.dev/uuid.mjs";
 ```
 
-## Usage/Examples
+## 💻 Usage/Examples
 
-#### Import (Node only)
+#### Import (Node.js)
 Once installed with npm package manager, you need to import the package in order to use it.
 
 ```javascript
@@ -57,78 +59,122 @@ import UUID from "@levihub/uuid"; // ES Modules
 ```
 
 #### Create a new instance
-For using the UUID class, you have to create an instance of it first.
+For using the UUID class, you have to create an instance of it first. You can customize the character set during instantiation:
 
 ```javascript
-const generator = new UUID();
+// Use default character set (0-9, A-Z, a-z)
+const uuid = new UUID();
+
+// Or use your own character set
+const binaryUuid = new UUID("01"); // Only 0 and 1
+const hexUuid = new UUID("0123456789ABCDEF"); // Hexadecimal
 ```
 
-#### Generate new UUID
+#### Generate UUIDs
+The basic usage is simple - just call generate to get a new UUID. You can either let the generator keep track of the last UUID or provide one to get the next in sequence:
+
 ```javascript
-var userId = generator.newUUID();
+const uuid = new UUID();
+
+// Let the generator keep track (default behavior)
+const id = uuid.generate();     // gets "0"
+const next = uuid.generate();   // gets "1"
+const another = uuid.generate(); // gets "2"
+
+// Or provide an UUID to get the next one
+const next_after_A = uuid.generate("A");  // gets "B"
+const next_after_z = uuid.generate("z");  // gets "00"
+const next_after_9 = uuid.generate("9");  // gets "A"
 ```
 
-#### Recycle/Reuse an existing UUID
-From the moment you pass the generated UUID back to the generator to reuse it again, the generator push it into a list of unused UUIDs.
 
-This list will have priority over creating new UUIDs.
+#### UUID Reuse System
+The library provides a flexible system for reusing UUIDs. You can control this behavior in two ways:
 
+1. **Global Settings** - Configure how reuse works by default:
 ```javascript
-generator.reuse(uuidToReuse);
+const uuid = new UUID();
+
+// Control the order of reused UUIDs
+uuid.ordered_unused_uuids = true;  // Reuse in order (default)
+// or
+uuid.ordered_unused_uuids = false; // First in, first out
+
+// Control if reuse is enabled by default
+uuid.reuse_by_default = true;  // Try to reuse by default (default)
+// or
+uuid.reuse_by_default = false; // Always generate new by default
 ```
 
-A more detailed example:
-
+2. **Per-Generation Control** - Override the default behavior for specific generations:
 ```javascript
-const generator = new UUID();
+// Generate with default behavior (uses reuse_by_default setting)
+const id1 = uuid.generate();
 
-var first = generator.newUUID(); // returns 0
-var second = generator.newUUID(); // returns 1
+// Force reuse of recycled UUIDs
+const id2 = uuid.generate(null, true);
 
-// we push an UUID to a list of unused UUIDs
-generator.reuse(first); // tells the generator that "first" UUID is available
-
-// we generate a "new" one (the recycled one comes first)
-var reused = generator.newUUID(); // returns 0 (the "first" UUID)
-
-// we generate another one (the unused list is empty)
-var next = generator.newUUID(); // returns 2 (we get the next one)
+// Force new UUID generation
+const id3 = uuid.generate(null, false);
 ```
 
-#### Check total used and unused UUIDs
-You can check how many UUIDs do you have in use by the generator or how many are available to reuse.
-You can check too the UUIDs that are waiting to be reused. (If there is any)
+#### Recycling UUIDs
+When you're done with an UUID, you can recycle it for future use:
 
 ```javascript
-generator.totalUsed; // returns total UUIDs used
-generator.totalUnused; // returns total UUIDs available to reuse
-generator.unusedUUIDs; // returns the list of reusable UUIDs
+const uuid = new UUID();
+
+// Generate some UUIDs
+const first = uuid.generate();  // gets "0"
+const second = uuid.generate(); // gets "1"
+
+// Recycle them when no longer needed
+uuid.reuse(second);
+uuid.reuse(first);
+
+// Next generation will use recycled UUIDs based on your settings
+const reused = uuid.generate(); // If ordered: gets "0", if unordered: gets "second"
 ```
 
-#### Changing the character set and limit for generating UUIDs
-You can specify the set of characters for generating UUIDs.
+#### Check UUID Status
+Monitor your UUID usage and available recycled UUIDs:
+
 ```javascript
-generator.charSet = [ "A", "B", "C" ];
+console.log(uuid.current_uuids);      // how many UUIDs are in use
+console.log(uuid.unused_uuids_count); // how many are ready to reuse
+console.log(uuid.unused_uuids);       // list of recycled UUIDs
 ```
 
-You can also set a limit to how many UUIDs you want to generate.
+#### Set a limit for generating UUIDs
+You can set a limit to how many UUIDs you want to generate.
+
 ```javascript
-generator.limit = 50;
+uuid.limit = 1000; // Will stop generating after 1000 UUIDs
 ```
 
-A more detailed example:
+#### Compare UUIDs
+Need to compare two UUIDs? We've got you covered:
+
 ```javascript
-generator.charSet = [ "A", "k" ]; // UUIDs will have only "A" and "k" characters
-generator.limit = 50; // it will not generate more than 50 UUIDs
+const result = uuid.compare("A1", "B2"); // Returns -1, 0, or 1
+```
 
-for (let i = 0; i < 100; i++) { // we try to generate 100 UUIDs
-  let id = generator.newUUID(); // returns string or false 
+#### Reset the Generator
+Want to start fresh? The reset method will clear all state and return the generator to its initial configuration:
 
-  if (id) { // if it is NOT false (an UUID has been generated)
-    console.log(`The UUID '${id}' has been generated.`);
-  } else { // if it is false (UUID has not been generated)
-    console.log(`${generator.totalUsed} UUIDs generated. Limit reached.`);
-    break;
-  }
-}
+```javascript
+const uuid = new UUID();
+
+// Generate some UUIDs
+uuid.generate(); // "0"
+uuid.generate(); // "1"
+uuid.reuse("0"); // Recycle "0"
+
+// Reset everything
+uuid.reset();
+
+// Now we're back to the beginning
+uuid.generate(); // "0"
+uuid.unused_uuids_count; // 0
+uuid.current_uuids; // 1
 ```
